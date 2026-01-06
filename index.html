@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Kalkulator Gaji Bersih 2024 akurat dengan metode PPh 21 TER terbaru. Hitung take home pay dan potongan pajak karyawan otomatis dan gratis.">
+<meta name="keywords" content="kalkulator gaji bersih, pph 21 ter 2024, hitung pajak penghasilan, simulasi gaji bersih, take home pay indonesia, tarif efektif rata-rata">
+<meta name="author" content="AbramPM">
+<title>Kalkulator Gaji Bersih & PPh 21 TER 2024 <link rel="icon" href="https://fav.farm/💸" /> </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://fav.farm/💸" />
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+    }
+
+    .container {
+        background: #fff;
+        padding: 30px;
+        width: 100%;
+        max-width: 450px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 22px;
+        color: #1e3c72;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box; /* Agar padding tidak merusak lebar */
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #1e3c72;
+        border: none;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #16305c;
+    }
+
+    .result {
+        margin-top: 25px;
+        padding: 18px;
+        background: #f4f7fb;
+        border-radius: 10px;
+        border-left: 5px solid #1e3c72;
+    }
+
+    .result p {
+        margin: 8px 0;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .highlight {
+        font-weight: bold;
+        color: #1e3c72;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 11px;
+        margin-top: 20px;
+        color: #777;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Kalkulator Gaji Bersih</h1>
+    <div class="subtitle">PPh 21 TER 2024 (Indonesia)</div>
+
+    <label>Gaji Bruto Bulanan (Rp)</label>
+    <input type="number" id="gaji" placeholder="Contoh: 8000000">
+
+    <label>Status PTKP</label>
+    <select id="ptkp">
+        <option value="TK0">TK/0</option>
+        <option value="K0">K/0</option>
+        <option value="K1">K/1</option>
+        <option value="K2">K/2</option>
+        <option value="K3">K/3</option>
+    </select>
+
+    <div style="display: flex; gap: 10px;">
+        <button onclick="hitung()" style="flex: 2;">Hitung Sekarang</button>
+        <button onclick="resetForm()" style="flex: 1; background: #6c757d;">Reset</button>
+    </div>
+
+    <div class="result" id="hasil" style="display:none;">
+        <p>Gaji Bruto: <span class="highlight" id="outBruto"></span></p>
+        <p>PPh 21 (TER): <span class="highlight" id="outPajak"></span></p>
+        <div style="height: 1px; background: #ccc; margin: 10px 0;"></div>
+        <p style="font-size: 16px;">Take Home Pay: <span class="highlight" id="outNetto" style="color: #28a745;"></span></p>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <p style="font-size: 12px; margin-bottom: 5px;">Bantu server tetap hidup? ☕</p>
+        <a href="https://saweria.co/AbramPM" target="_blank" style="text-decoration: none; background: #FF813F; color: white; padding: 8px 15px; border-radius: 5px; font-size: 12px; font-weight: bold;">
+            Traktir Kopi
+        </a>
+    </div>
+
+    <footer>
+        <p style="font-size: 10px; color: #888; margin-bottom: 10px; line-height: 1.5;">
+            Disclaimer: Perhitungan ini adalah estimasi berdasarkan PP 58 Tahun 2023.<br>
+            Hasil akhir mungkin berbeda tergantung kebijakan perusahaan.
+        </p>
+        <a href="https://saweria.co/AbramPM" target="_blank" style="text-decoration: none; color: #1e3c72; font-weight: bold; font-size: 12px;">
+            &copy; 2025 AbramPM Tools
+        </a>
+    </footer>
+</div>
+
+<script>
+/*
+  Data Tabel TER Sederhana (Sampel untuk Logic)
+  Note: Untuk penggunaan profesional, tambahkan data lengkap tabel TER A/B/C.
+*/
+const terTable = {
+    TK0: [ // TER A
+        { max: 5400000, rate: 0 },
+        { max: 5650000, rate: 0.25 },
+        { max: 5950000, rate: 0.5 },
+        { max: 6300000, rate: 0.75 },
+        { max: 6750000, rate: 1 },
+        { max: 7500000, rate: 1.25 },
+        { max: 8550000, rate: 1.5 },
+        { max: 9650000, rate: 1.75 },
+        { max: 10050000, rate: 2 },
+        { max: 10350000, rate: 2.25 }, // Tambahan data dikit biar gak kaget
+        { max: 1000000000, rate: 2.5 } // Catch all sementara
+    ],
+    K0: [ // TER A
+        { max: 5400000, rate: 0 },
+        { max: 5650000, rate: 0.25 },
+        { max: 5950000, rate: 0.5 },
+        { max: 6300000, rate: 0.75 },
+        { max: 6750000, rate: 1 },
+        { max: 7500000, rate: 1.25 },
+        { max: 8550000, rate: 1.5 },
+        { max: 9650000, rate: 1.75 },
+        { max: 1000000000, rate: 2 }
+    ],
+    K1: [ // TER B
+        { max: 6200000, rate: 0 },
+        { max: 6500000, rate: 0.25 },
+        { max: 6850000, rate: 0.5 },
+        { max: 7300000, rate: 0.75 },
+        { max: 7800000, rate: 1 },
+        { max: 8400000, rate: 1.25 },
+        { max: 9300000, rate: 1.5 },
+        { max: 10200000, rate: 1.75 },
+        { max: 1000000000, rate: 2 }
+    ],
+    K2: [ // TER B (Sama logicnya dgn K1 utk sampel ini)
+        { max: 6200000, rate: 0 },
+        { max: 6500000, rate: 0.25 },
+        { max: 1000000000, rate: 1.5 } 
+    ],
+    K3: [ // TER C
+        { max: 6600000, rate: 0 },
+        { max: 6950000, rate: 0.25 },
+        { max: 7350000, rate: 0.5 },
+        { max: 1000000000, rate: 1 } 
+    ]
+};
+
+function formatRupiah(num) {
+    return "Rp " + num.toLocaleString("id-ID");
+}
+
+function resetForm() {
+    document.getElementById("gaji").value = "";
+    document.getElementById("hasil").style.display = "none";
+}
+
+function hitung() {
+    const gaji = parseFloat(document.getElementById("gaji").value);
+    const ptkp = document.getElementById("ptkp").value;
+
+    // Validasi Input
+    if (isNaN(gaji) || gaji <= 0) {
+        alert("Masukkan jumlah gaji yang valid!");
+        return;
+    }
+
+    // Ambil tabel tarif berdasarkan PTKP
+    // Fallback ke TK0 jika status belum ada di data
+    const tarifList = terTable[ptkp] || terTable["TK0"]; 
+    let rate = 0;
+
+    // LOGIKA PENENTUAN RATE (Fixed)
+    // Cek apakah gaji melebihi batas data tertinggi kita?
+    if (gaji > tarifList[tarifList.length - 1].max) {
+        // Jika ya, pakai rate tertinggi yg kita punya
+        rate = tarifList[tarifList.length - 1].rate; 
+    } else {
+        // Jika tidak, cari di tabel
+        for (let i = 0; i < tarifList.length; i++) {
+            if (gaji <= tarifList[i].max) {
+                rate = tarifList[i].rate;
+                break;
+            }
+        }
+    }
+
+    // Hitung Pajak
+    const pajak = gaji * (rate / 100);
+    const netto = gaji - pajak;
+
+    // Tampilkan Hasil
+    document.getElementById("outBruto").innerText = formatRupiah(gaji);
+    document.getElementById("outPajak").innerText = formatRupiah(pajak) + " (" + rate + "%)";
+    document.getElementById("outNetto").innerText = formatRupiah(netto);
+    
+    document.getElementById("hasil").style.display = "block";
+}
+</script>
+
+</body>
+</html>
