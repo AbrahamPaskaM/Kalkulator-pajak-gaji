@@ -2,261 +2,335 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Cek Gaji Bersih: Kalkulator Take Home Pay Anti-Ribet. Hitung PPh 21 TER 2024 dan potongan BPJS otomatis.">
-<meta name="keywords" content="kalkulator gaji bersih, pph 21 ter 2024, hitung pajak penghasilan, take home pay, hitung bpjs karyawan">
+<meta name="description" content="Global Salary Calculator 2025. Accurate Take Home Pay for Indonesia, USA, UK, Germany, Japan, UAE, Singapore, Australia, Canada, Malaysia.">
+<meta name="keywords" content="salary calculator, take home pay, brutto netto rechner, gaji bersih, pph 21 ter, uk tax calculator, us paycheck calculator">
 <meta name="author" content="AbramPM">
-<title>Cek Gaji Bersih: Kalkulator Take Home Pay Anti-Ribet 🚀</title>
+<title>Global Salary Calculator: 10 Countries Edition 🌍</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="https://fav.farm/💸" />
 
 <style>
     body {
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #141E30, #243B55);
         min-height: 100vh;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         color: #333;
+        padding: 20px;
     }
 
     .container {
         background: #fff;
         padding: 30px;
         width: 100%;
-        max-width: 450px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        max-width: 500px;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     }
 
-    h1 {
-        text-align: center;
-        margin-bottom: 8px;
-        font-size: 22px;
-        color: #1e3c72;
-    }
+    .header-box { text-align: center; margin-bottom: 25px; }
+    h1 { margin: 5px 0; color: #1e3c72; font-size: 26px; font-weight: 800; }
+    .subtitle { font-size: 14px; color: #666; }
 
-    .subtitle {
-        text-align: center;
-        font-size: 13px;
-        color: #666;
-        margin-bottom: 25px;
-    }
-
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 6px;
-    }
+    label { display: block; font-weight: 600; margin-bottom: 8px; margin-top: 18px; font-size: 14px; }
 
     input[type="text"], select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 16px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        box-sizing: border-box;
+        width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #d1d5db;
+        font-size: 16px; box-sizing: border-box; transition: 0.3s; background: #f9fafb;
     }
+    input:focus, select:focus { border-color: #1e3c72; outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1); }
 
     button {
-        width: 100%;
-        padding: 12px;
-        background: #1e3c72;
-        border: none;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.3s;
+        width: 100%; padding: 16px; background: #1e3c72; border: none;
+        color: #fff; font-size: 16px; font-weight: 700; border-radius: 10px;
+        cursor: pointer; margin-top: 25px; transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
     }
+    button:hover { background: #16305c; transform: translateY(-2px); }
 
-    button:hover {
-        background: #16305c;
-    }
+    .dynamic-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+    .show { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Animasi Slide Down */
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    .info-text { font-size: 12px; color: #666; margin-top: 8px; font-style: italic; }
 
     .result {
-        margin-top: 25px;
-        padding: 18px;
-        background: #f4f7fb;
-        border-radius: 10px;
-        border-left: 5px solid #1e3c72;
-        animation: slideDown 0.5s ease-out;
+        margin-top: 25px; padding: 20px; background: #f0fdf4;
+        border-radius: 12px; border: 1px solid #bbf7d0; display: none;
+    }
+    .row { display: flex; justify-content: space-between; margin: 12px 0; font-size: 15px; color: #374151; }
+    .big-total { 
+        font-size: 24px; font-weight: 800; color: #166534; margin-top: 15px; 
+        padding-top: 15px; border-top: 2px dashed #bbf7d0; text-align: right;
     }
 
-    .result p {
-        margin: 8px 0;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
+    .zero-tax-badge {
+        background: #dbeafe; color: #1e40af; padding: 5px 10px; 
+        border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 5px;
     }
 
-    .highlight {
-        font-weight: bold;
-        color: #1e3c72;
+    footer { text-align: center; font-size: 11px; margin-top: 30px; color: #9ca3af; border-top: 1px solid #eee; padding-top: 20px; }
+    
+    .donation-box {
+        display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;
     }
-
-    /* Style Checkbox BPJS */
-    .bpjs-box {
-        margin-bottom: 20px; 
-        display: flex; 
-        align-items: center; 
-        gap: 10px; 
-        background: #eef2f7; 
-        padding: 10px; 
-        border-radius: 8px;
-        border: 1px solid #dce4ec;
+    .btn-donate {
+        text-decoration: none; padding: 10px 18px; border-radius: 50px; 
+        font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 5px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;
     }
-
-    footer {
-        text-align: center;
-        font-size: 11px;
-        margin-top: 20px;
-        color: #777;
-    }
+    .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+    .saweria { background: #FF813F; color: white; }
+    .kofi { background: #29abe0; color: white; }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>Cek Gaji Bersih 🚀</h1>
-    <div class="subtitle">Hitung Take Home Pay Tanpa Ribet</div>
-
-    <label>Gaji Bruto Bulanan</label>
-    <div style="position: relative;">
-        <span style="position: absolute; left: 12px; top: 11px; color: #888;">Rp</span>
-        <input type="text" id="gaji" placeholder="0" onkeyup="formatInputGaji(this)" style="padding-left: 40px;">
+    <div class="header-box">
+        <h1>Global Salary Calc 🌍</h1>
+        <div class="subtitle">International Take Home Pay Estimator</div>
     </div>
 
-    <label>Status PTKP</label>
-    <select id="ptkp">
-        <option value="TK0">TK/0 (Lajang/Tanpa Tanggungan)</option>
-        <option value="K0">K/0 (Menikah/Tanpa Tanggungan)</option>
-        <option value="K1">K/1 (Menikah/1 Anak)</option>
-        <option value="K2">K/2 (Menikah/2 Anak)</option>
-        <option value="K3">K/3 (Menikah/3 Anak)</option>
+    <label>Select Country / Pilih Negara</label>
+    <select id="country" onchange="gantiNegara()">
+        <option value="ID">🇮🇩 Indonesia (IDR)</option>
+        <option value="US">🇺🇸 United States (USD)</option>
+        <option value="UK">🇬🇧 United Kingdom (GBP)</option>
+        <option value="AU">🇦🇺 Australia (AUD)</option>
+        <option value="CA">🇨🇦 Canada (CAD)</option>
+        <option value="SG">🇸🇬 Singapore (SGD)</option>
+        <option value="MY">🇲🇾 Malaysia (MYR)</option>
+        <option value="JP">🇯🇵 Japan (JPY)</option>
+        <option value="DE">🇩🇪 Germany (EUR)</option>
+        <option value="AE">🇦🇪 UAE / Dubai (AED)</option>
     </select>
 
-    <div class="bpjs-box">
-        <input type="checkbox" id="ikutBpjs" style="width: 20px; margin: 0; cursor: pointer;" checked>
-        <label for="ikutBpjs" style="margin: 0; font-weight: normal; font-size: 13px; cursor: pointer;">
-            Hitung Potongan BPJS (~4%)
-        </label>
+    <label id="labelGaji">Monthly Salary (Gross)</label>
+    <div style="position: relative;">
+        <span id="currencySymbol" style="position: absolute; left: 15px; top: 14px; color: #6b7280; font-weight: bold;">Rp</span>
+        <input type="text" id="gaji" placeholder="0" onkeyup="formatInputGaji(this)" style="padding-left: 50px;">
     </div>
 
-    <div style="display: flex; gap: 10px;">
-        <button onclick="hitung()" style="flex: 2;">Hitung Sekarang</button>
-        <button onclick="resetForm()" style="flex: 1; background: #6c757d;">Ulangi</button>
-    </div>
-
-    <div class="result" id="hasil" style="display:none;">
+    <div id="section-ID" class="dynamic-section show">
+        <label>Status PTKP</label>
+        <select id="ptkp">
+            <option value="TK0">TK/0 (Lajang)</option>
+            <option value="K0">K/0 (Menikah)</option>
+            <option value="K1">K/1 (Menikah + 1 Anak)</option>
+        </select>
+        <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+            <input type="checkbox" id="ikutBpjs" style="width:20px;" checked> <span style="font-size:14px">Potong BPJS (~4%)</span>
         </div>
-
-    <div style="text-align: center; margin-top: 20px;">
-        <p style="font-size: 12px; margin-bottom: 5px;">Bantu server tetap hidup? ☕</p>
-        <a href="https://saweria.co/AbramPM" target="_blank" style="text-decoration: none; background: #FF813F; color: white; padding: 8px 15px; border-radius: 5px; font-size: 12px; font-weight: bold;">
-            Traktir Kopi
-        </a>
     </div>
+
+    <div id="section-US" class="dynamic-section">
+        <label>Filing Status</label>
+        <select id="usStatus"><option value="single">Single Filer</option><option value="married">Married Jointly</option></select>
+        <p class="info-text">*Includes Federal Tax & FICA (Social Security + Medicare).</p>
+    </div>
+
+    <div id="section-UK" class="dynamic-section">
+        <p class="info-text">*Includes Income Tax & National Insurance (NI) estimate.</p>
+    </div>
+
+    <div id="section-AU" class="dynamic-section">
+        <p class="info-text">*Includes ATO Income Tax & Medicare Levy (2%).</p>
+    </div>
+
+    <div id="section-CA" class="dynamic-section">
+        <p class="info-text">*Includes Federal & Provincial Tax estimate.</p>
+    </div>
+
+    <div id="section-SG" class="dynamic-section">
+        <p class="info-text">*Progressive Tax Rates (Non-Residents may differ). CPF excluded for Expats.</p>
+    </div>
+
+    <div id="section-MY" class="dynamic-section">
+        <p class="info-text">*Includes PCB Tax & EPF Employee Contribution (11%).</p>
+    </div>
+
+    <div id="section-JP" class="dynamic-section">
+        <p class="info-text">*Includes Income Tax, Resident Tax (~10%) & Social Insurance.</p>
+    </div>
+
+    <div id="section-DE" class="dynamic-section">
+        <label>Tax Class (Steuerklasse)</label>
+        <select id="deClass"><option value="1">Class 1 (Single)</option><option value="3">Class 3 (Married/Higher earner)</option></select>
+        <p class="info-text">*Includes Lohnsteuer, Solidarity Surcharge & Social Security.</p>
+    </div>
+
+    <div id="section-AE" class="dynamic-section">
+        <div class="zero-tax-badge">✨ 0% Income Tax Haven</div>
+        <p class="info-text">Enjoy your full salary. No federal income tax in UAE.</p>
+    </div>
+
+    <button onclick="hitung()">Calculate / Hitung 🚀</button>
+
+    <div class="result" id="hasil"></div>
 
     <footer>
-        <p style="font-size: 10px; color: #888; margin-bottom: 10px; line-height: 1.5;">
-            Disclaimer: Estimasi berdasarkan PPh 21 TER (PP 58/2023) & BPJS Karyawan.<br>
-            Hasil akhir tergantung kebijakan perusahaan.
-        </p>
-        <a href="https://saweria.co/AbramPM" target="_blank" style="text-decoration: none; color: #1e3c72; font-weight: bold; font-size: 12px;">
-            &copy; 2025 AbramPM Tools
-        </a>
+        <p style="font-size: 13px; font-weight: 500; margin-bottom: 10px;">Support the Developer? ☕</p>
+        <div class="donation-box">
+            <a href="https://saweria.co/AbramPM" target="_blank" class="btn-donate saweria">🇮🇩 Saweria</a>
+            <a href="https://ko-fi.com/abrahampm" target="_blank" class="btn-donate kofi">💙 Ko-fi (USD)</a>
+        </div>
+        <p>⚠️ Disclaimer: Estimates for simulation only. Consult a tax professional.<br>&copy; 2025 AbramPM Tools</p>
     </footer>
 </div>
 
 <script>
-/* Data Tabel TER Sederhana (Sampel) */
+let currentCountry = "ID";
+let currency = "Rp";
+let locale = "id-ID";
+
 const terTable = {
-    TK0: [{ max: 5400000, rate: 0 }, { max: 5650000, rate: 0.25 }, { max: 5950000, rate: 0.5 }, { max: 6300000, rate: 0.75 }, { max: 6750000, rate: 1 }, { max: 7500000, rate: 1.25 }, { max: 8550000, rate: 1.5 }, { max: 9650000, rate: 1.75 }, { max: 10050000, rate: 2 }, { max: 1000000000, rate: 2.5 }],
-    K0: [{ max: 5400000, rate: 0 }, { max: 5650000, rate: 0.25 }, { max: 5950000, rate: 0.5 }, { max: 6300000, rate: 0.75 }, { max: 6750000, rate: 1 }, { max: 7500000, rate: 1.25 }, { max: 8550000, rate: 1.5 }, { max: 9650000, rate: 1.75 }, { max: 1000000000, rate: 2 }],
-    K1: [{ max: 6200000, rate: 0 }, { max: 6500000, rate: 0.25 }, { max: 6850000, rate: 0.5 }, { max: 7300000, rate: 0.75 }, { max: 7800000, rate: 1 }, { max: 8400000, rate: 1.25 }, { max: 9300000, rate: 1.5 }, { max: 10200000, rate: 1.75 }, { max: 1000000000, rate: 2 }],
-    K2: [{ max: 6200000, rate: 0 }, { max: 6500000, rate: 0.25 }, { max: 1000000000, rate: 1.5 }],
-    K3: [{ max: 6600000, rate: 0 }, { max: 6950000, rate: 0.25 }, { max: 7350000, rate: 0.5 }, { max: 1000000000, rate: 1 }]
+    TK0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:10050000,rate:2},{max:1000000000,rate:2.5}],
+    K0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:1000000000,rate:2}],
+    K1: [{max:6200000,rate:0},{max:6500000,rate:0.25},{max:6850000,rate:0.5},{max:7300000,rate:0.75},{max:7800000,rate:1},{max:8400000,rate:1.25},{max:9300000,rate:1.5},{max:10200000,rate:1.75},{max:1000000000,rate:2}]
 };
 
-// Format Rupiah saat ngetik
-function formatInputGaji(input) {
-    let angka = input.value.replace(/\D/g, ''); 
-    input.value = new Intl.NumberFormat('id-ID').format(angka);
-}
-
-function formatRupiah(num) {
-    return "Rp " + num.toLocaleString("id-ID");
-}
-
-function resetForm() {
+function gantiNegara() {
+    currentCountry = document.getElementById("country").value;
+    const symbolEl = document.getElementById("currencySymbol");
+    
     document.getElementById("gaji").value = "";
     document.getElementById("hasil").style.display = "none";
+    document.querySelectorAll('.dynamic-section').forEach(el => el.classList.remove('show'));
+
+    const config = {
+        ID: { sym: "Rp", loc: "id-ID", label: "Gaji Bulanan (Gross)" },
+        US: { sym: "$", loc: "en-US", label: "Monthly Salary (Gross)" },
+        UK: { sym: "£", loc: "en-GB", label: "Monthly Salary (Gross)" },
+        AU: { sym: "A$", loc: "en-AU", label: "Monthly Salary (Gross)" },
+        CA: { sym: "C$", loc: "en-CA", label: "Monthly Salary (Gross)" },
+        SG: { sym: "S$", loc: "en-SG", label: "Monthly Salary (Gross)" },
+        MY: { sym: "RM", loc: "ms-MY", label: "Gaji Sebulan (Kasar)" },
+        JP: { sym: "¥", loc: "ja-JP", label: "Monthly Salary (Yen)" },
+        DE: { sym: "€", loc: "de-DE", label: "Monatsgehalt (Brutto)" },
+        AE: { sym: "AED", loc: "en-AE", label: "Monthly Salary (AED)" },
+    };
+
+    const cfg = config[currentCountry];
+    currency = cfg.sym;
+    locale = cfg.loc;
+    symbolEl.innerText = cfg.sym;
+    document.getElementById("labelGaji").innerText = cfg.label;
+
+    const section = document.getElementById(`section-${currentCountry}`);
+    if(section) section.classList.add("show");
+}
+
+function formatInputGaji(input) {
+    let angka = input.value.replace(/\D/g, ''); 
+    if(angka === "") return;
+    input.value = new Intl.NumberFormat(locale).format(angka);
+}
+
+function fmtMoney(num) {
+    return currency + " " + num.toLocaleString(locale, {minimumFractionDigits: (currentCountry === 'JP' || currentCountry === 'ID') ? 0 : 2});
 }
 
 function hitung() {
-    let rawValue = document.getElementById("gaji").value.replace(/\./g, '');
-    const gaji = parseFloat(rawValue);
-    const ptkp = document.getElementById("ptkp").value;
-    const pakaiBpjs = document.getElementById("ikutBpjs").checked;
+    let raw = document.getElementById("gaji").value.replace(/[^0-9]/g, '');
+    let gaji = parseFloat(raw);
+    if (isNaN(gaji) || gaji <= 0) { alert("Please enter valid salary"); return; }
 
-    if (isNaN(gaji) || gaji <= 0) {
-        alert("Masukkan gaji dulu boss!");
-        return;
+    let pajak = 0;
+    let sosmed = 0; 
+    let labelPajak = "Tax";
+    let labelSosmed = "Insurance/Other";
+
+    let annual = gaji * 12; 
+
+    if (currentCountry === "ID") {
+        const ptkp = document.getElementById("ptkp").value;
+        const list = terTable[ptkp] || terTable["TK0"];
+        let rate = 0;
+        if(gaji > list[list.length-1].max) rate = list[list.length-1].rate;
+        else { for(let i=0; i<list.length; i++) { if(gaji <= list[i].max) { rate=list[i].rate; break; } } }
+        pajak = gaji * (rate/100);
+        labelPajak = `PPh 21 TER (${rate}%)`;
+        if(document.getElementById("ikutBpjs").checked) { sosmed = gaji * 0.04; labelSosmed = "BPJS (4%)"; }
     }
 
-    // 1. Hitung Pajak
-    const tarifList = terTable[ptkp] || terTable["TK0"]; 
-    let rate = 0;
-    if (gaji > tarifList[tarifList.length - 1].max) {
-        rate = tarifList[tarifList.length - 1].rate; 
-    } else {
-        for (let i = 0; i < tarifList.length; i++) {
-            if (gaji <= tarifList[i].max) {
-                rate = tarifList[i].rate;
-                break;
-            }
-        }
-    }
-    const pajak = gaji * (rate / 100);
-
-    // 2. Hitung BPJS (4%)
-    let potonganBpjs = 0;
-    if (pakaiBpjs) {
-        potonganBpjs = gaji * 0.04; 
+    else if (currentCountry === "US") {
+        let deduct = (document.getElementById("usStatus").value === "single") ? 14600 : 29200;
+        let taxable = Math.max(0, annual - deduct);
+        let effRate = 0;
+        if(taxable > 100000) effRate = 0.22; else if(taxable > 45000) effRate = 0.12; else if(taxable > 0) effRate = 0.10;
+        pajak = (taxable * effRate) / 12;
+        sosmed = gaji * 0.0765;
+        labelPajak = "Federal Tax (Est)"; labelSosmed = "FICA (SS+Med)";
     }
 
-    // 3. Hitung Netto
-    const netto = gaji - pajak - potonganBpjs;
+    else if (currentCountry === "UK") {
+        let taxable = Math.max(0, annual - 12570);
+        let taxAnnual = 0;
+        if (taxable > 37700) taxAnnual = (37700 * 0.20) + ((taxable - 37700) * 0.40); else taxAnnual = taxable * 0.20;
+        let niAnnual = Math.max(0, annual - 12570) * 0.08; 
+        pajak = taxAnnual / 12; sosmed = niAnnual / 12;
+        labelPajak = "Income Tax"; labelSosmed = "National Insurance";
+    }
 
-    // 4. Render Hasil ke HTML
-    const containerHasil = document.getElementById("hasil");
+    else if (currentCountry === "AU") {
+        let taxAnnual = 0;
+        if(annual > 18200) { if(annual <= 45000) taxAnnual = (annual-18200)*0.16; else if(annual <= 135000) taxAnnual = 4288 + (annual-45000)*0.30; else taxAnnual = 31288 + (annual-135000)*0.37; }
+        pajak = taxAnnual / 12; sosmed = gaji * 0.02; 
+        labelPajak = "Income Tax"; labelSosmed = "Medicare Levy (2%)";
+    }
+
+    else if (currentCountry === "CA") {
+        let effRate = 0; if(annual > 100000) effRate = 0.26; else if(annual > 50000) effRate = 0.20; else effRate = 0.15;
+        pajak = gaji * effRate; sosmed = gaji * 0.059;
+        labelPajak = "Fed+Prov Tax (Est)"; labelSosmed = "CPP/EI";
+    }
+
+    else if (currentCountry === "SG") {
+        let effRate = 0; if(annual > 80000) effRate = 0.07; else if(annual > 40000) effRate = 0.035; else if(annual > 20000) effRate = 0.01;
+        pajak = gaji * effRate; sosmed = 0;
+        labelPajak = "Income Tax (Est)"; labelSosmed = "CPF (PR Only - 0)";
+    }
+
+    else if (currentCountry === "MY") {
+        let effRate = 0; if(annual > 100000) effRate = 0.15; else if(annual > 50000) effRate = 0.08; else if(annual > 35000) effRate = 0.03;
+        pajak = gaji * effRate; sosmed = gaji * 0.11;
+        labelPajak = "PCB Tax (Est)"; labelSosmed = "EPF (11%)";
+    }
+
+    else if (currentCountry === "JP") {
+        let effTax = 0.05; if(annual > 4000000) effTax = 0.10;
+        let residentTax = 0.10; let socialIns = 0.15;
+        pajak = gaji * (effTax + residentTax); sosmed = gaji * socialIns;
+        labelPajak = "Income + Res. Tax"; labelSosmed = "Social Insurance";
+    }
+
+    else if (currentCountry === "DE") {
+        let taxClass = document.getElementById("deClass").value;
+        let totalDeductRate = (taxClass === "1") ? 0.38 : 0.30;
+        pajak = gaji * (totalDeductRate * 0.6); sosmed = gaji * (totalDeductRate * 0.4);
+        labelPajak = "Lohnsteuer (Tax)"; labelSosmed = "Social (Renten/Kranken)";
+    }
+
+    else if (currentCountry === "AE") {
+        pajak = 0; sosmed = 0; labelPajak = "Income Tax (0%)"; labelSosmed = "Deductions";
+    }
+
+    const netto = gaji - pajak - sosmed;
+    const divResult = document.getElementById("hasil");
     
-    containerHasil.innerHTML = `
-        <p>Gaji Bruto: <span class="highlight">${formatRupiah(gaji)}</span></p>
-        <p>PPh 21 (TER): <span class="highlight" style="color: #d9534f;">- ${formatRupiah(pajak)} (${rate}%)</span></p>
-        ${pakaiBpjs ? `<p>BPJS (4%): <span class="highlight" style="color: #d9534f;">- ${formatRupiah(potonganBpjs)}</span></p>` : ''}
-        <div style="height: 1px; background: #ccc; margin: 10px 0;"></div>
-        <p style="font-size: 18px; font-weight: bold; margin-top: 15px;">
-            Take Home Pay: <br>
-            <span style="color: #28a745; font-size: 24px;">${formatRupiah(netto)}</span>
-        </p>
-    `;
-
-    // Trigger Animasi
-    containerHasil.style.display = "none";
-    containerHasil.offsetHeight; 
-    containerHasil.style.display = "block";
+    let html = `<div class="row"><span>Gross Income:</span> <strong>${fmtMoney(gaji)}</strong></div>`;
+    if(pajak > 0) html += `<div class="row"><span>${labelPajak}:</span> <span style="color:#ef4444">-${fmtMoney(pajak)}</span></div>`;
+    else html += `<div class="row"><span>${labelPajak}:</span> <span style="color:#3b82f6">0 (Tax Free)</span></div>`;
+    if(sosmed > 0) html += `<div class="row"><span>${labelSosmed}:</span> <span style="color:#ef4444">-${fmtMoney(sosmed)}</span></div>`;
+    html += `<div class="big-total">Net Pay: ${fmtMoney(netto)}</div>`;
+    
+    divResult.innerHTML = html;
+    divResult.style.display = "block";
 }
 </script>
 
