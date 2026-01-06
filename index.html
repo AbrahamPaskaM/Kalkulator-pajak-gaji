@@ -103,6 +103,17 @@
         margin-top: 20px;
         color: #777;
     }
+
+    /* Animasi Slide Down */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result {
+    animation: slideDown 0.5s ease-out;
+}
+
 </style>
 </head>
 
@@ -113,7 +124,10 @@
     <div class="subtitle">PPh 21 TER 2024 (Indonesia)</div>
 
     <label>Gaji Bruto Bulanan (Rp)</label>
-    <input type="number" id="gaji" placeholder="Contoh: 8000000">
+<div style="position: relative;">
+    <span style="position: absolute; left: 12px; top: 11px; color: #888;">Rp</span>
+    <input type="text" id="gaji" placeholder="0" onkeyup="formatInputGaji(this)" style="padding-left: 40px;">
+</div>
 
     <label>Status PTKP</label>
     <select id="ptkp">
@@ -156,57 +170,23 @@
 
 <script>
 /*
-  Data Tabel TER Sederhana (Sampel untuk Logic)
-  Note: Untuk penggunaan profesional, tambahkan data lengkap tabel TER A/B/C.
+  Data Tabel TER Sederhana (Sampel)
 */
 const terTable = {
-    TK0: [ // TER A
-        { max: 5400000, rate: 0 },
-        { max: 5650000, rate: 0.25 },
-        { max: 5950000, rate: 0.5 },
-        { max: 6300000, rate: 0.75 },
-        { max: 6750000, rate: 1 },
-        { max: 7500000, rate: 1.25 },
-        { max: 8550000, rate: 1.5 },
-        { max: 9650000, rate: 1.75 },
-        { max: 10050000, rate: 2 },
-        { max: 10350000, rate: 2.25 }, // Tambahan data dikit biar gak kaget
-        { max: 1000000000, rate: 2.5 } // Catch all sementara
-    ],
-    K0: [ // TER A
-        { max: 5400000, rate: 0 },
-        { max: 5650000, rate: 0.25 },
-        { max: 5950000, rate: 0.5 },
-        { max: 6300000, rate: 0.75 },
-        { max: 6750000, rate: 1 },
-        { max: 7500000, rate: 1.25 },
-        { max: 8550000, rate: 1.5 },
-        { max: 9650000, rate: 1.75 },
-        { max: 1000000000, rate: 2 }
-    ],
-    K1: [ // TER B
-        { max: 6200000, rate: 0 },
-        { max: 6500000, rate: 0.25 },
-        { max: 6850000, rate: 0.5 },
-        { max: 7300000, rate: 0.75 },
-        { max: 7800000, rate: 1 },
-        { max: 8400000, rate: 1.25 },
-        { max: 9300000, rate: 1.5 },
-        { max: 10200000, rate: 1.75 },
-        { max: 1000000000, rate: 2 }
-    ],
-    K2: [ // TER B (Sama logicnya dgn K1 utk sampel ini)
-        { max: 6200000, rate: 0 },
-        { max: 6500000, rate: 0.25 },
-        { max: 1000000000, rate: 1.5 } 
-    ],
-    K3: [ // TER C
-        { max: 6600000, rate: 0 },
-        { max: 6950000, rate: 0.25 },
-        { max: 7350000, rate: 0.5 },
-        { max: 1000000000, rate: 1 } 
-    ]
+    TK0: [{ max: 5400000, rate: 0 }, { max: 5650000, rate: 0.25 }, { max: 5950000, rate: 0.5 }, { max: 6300000, rate: 0.75 }, { max: 6750000, rate: 1 }, { max: 7500000, rate: 1.25 }, { max: 8550000, rate: 1.5 }, { max: 9650000, rate: 1.75 }, { max: 10050000, rate: 2 }, { max: 1000000000, rate: 2.5 }],
+    K0: [{ max: 5400000, rate: 0 }, { max: 5650000, rate: 0.25 }, { max: 5950000, rate: 0.5 }, { max: 6300000, rate: 0.75 }, { max: 6750000, rate: 1 }, { max: 7500000, rate: 1.25 }, { max: 8550000, rate: 1.5 }, { max: 9650000, rate: 1.75 }, { max: 1000000000, rate: 2 }],
+    K1: [{ max: 6200000, rate: 0 }, { max: 6500000, rate: 0.25 }, { max: 6850000, rate: 0.5 }, { max: 7300000, rate: 0.75 }, { max: 7800000, rate: 1 }, { max: 8400000, rate: 1.25 }, { max: 9300000, rate: 1.5 }, { max: 10200000, rate: 1.75 }, { max: 1000000000, rate: 2 }],
+    K2: [{ max: 6200000, rate: 0 }, { max: 6500000, rate: 0.25 }, { max: 1000000000, rate: 1.5 }],
+    K3: [{ max: 6600000, rate: 0 }, { max: 6950000, rate: 0.25 }, { max: 7350000, rate: 0.5 }, { max: 1000000000, rate: 1 }]
 };
+
+// Fungsi Format Rupiah saat ngetik
+function formatInputGaji(input) {
+    // Hapus karakter selain angka
+    let angka = input.value.replace(/\D/g, ''); 
+    // Format jadi rupiah (ada titiknya)
+    input.value = new Intl.NumberFormat('id-ID').format(angka);
+}
 
 function formatRupiah(num) {
     return "Rp " + num.toLocaleString("id-ID");
@@ -218,27 +198,22 @@ function resetForm() {
 }
 
 function hitung() {
-    const gaji = parseFloat(document.getElementById("gaji").value);
+    // Ambil value dan buang titiknya biar jadi angka murni buat dihitung
+    let rawValue = document.getElementById("gaji").value.replace(/\./g, '');
+    const gaji = parseFloat(rawValue);
     const ptkp = document.getElementById("ptkp").value;
 
-    // Validasi Input
     if (isNaN(gaji) || gaji <= 0) {
         alert("Masukkan jumlah gaji yang valid!");
         return;
     }
 
-    // Ambil tabel tarif berdasarkan PTKP
-    // Fallback ke TK0 jika status belum ada di data
     const tarifList = terTable[ptkp] || terTable["TK0"]; 
     let rate = 0;
 
-    // LOGIKA PENENTUAN RATE (Fixed)
-    // Cek apakah gaji melebihi batas data tertinggi kita?
     if (gaji > tarifList[tarifList.length - 1].max) {
-        // Jika ya, pakai rate tertinggi yg kita punya
         rate = tarifList[tarifList.length - 1].rate; 
     } else {
-        // Jika tidak, cari di tabel
         for (let i = 0; i < tarifList.length; i++) {
             if (gaji <= tarifList[i].max) {
                 rate = tarifList[i].rate;
@@ -247,16 +222,18 @@ function hitung() {
         }
     }
 
-    // Hitung Pajak
     const pajak = gaji * (rate / 100);
     const netto = gaji - pajak;
 
-    // Tampilkan Hasil
     document.getElementById("outBruto").innerText = formatRupiah(gaji);
     document.getElementById("outPajak").innerText = formatRupiah(pajak) + " (" + rate + "%)";
     document.getElementById("outNetto").innerText = formatRupiah(netto);
     
-    document.getElementById("hasil").style.display = "block";
+    // Reset animasi biar bisa play ulang
+    const hasilDiv = document.getElementById("hasil");
+    hasilDiv.style.display = "none";
+    hasilDiv.offsetHeight; /* trigger reflow */
+    hasilDiv.style.display = "block";
 }
 </script>
 
