@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Global Salary Calculator 2025. Accurate Take Home Pay for Indonesia (Lengkap K/0-K/3), USA, UK, Germany, Japan, UAE, Singapore, Australia, Canada, Malaysia.">
+<meta name="description" content="Global Salary Calculator 2026. Calculate Take Home Pay for Indonesia, USA, UK, Germany, Japan, UAE, Singapore, Australia, Canada, Malaysia.">
 <meta name="keywords" content="salary calculator, take home pay, brutto netto rechner, gaji bersih, pph 21 ter, uk tax calculator, us paycheck calculator">
 <meta name="author" content="AbramPM">
 <title>Global Salary Calculator: 10 Countries Edition 🌍</title>
@@ -12,77 +12,155 @@
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #141E30, #243B55);
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
         min-height: 100vh;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         color: #333;
-        padding: 20px;
+        padding: 10px;
     }
 
     .container {
         background: #fff;
-        padding: 30px;
+        padding: 25px;
         width: 100%;
         max-width: 500px;
         border-radius: 16px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
 
-    .header-box { text-align: center; margin-bottom: 25px; }
+    .header-box { text-align: center; margin-bottom: 20px; }
     h1 { margin: 5px 0; color: #1e3c72; font-size: 26px; font-weight: 800; }
     .subtitle { font-size: 14px; color: #666; }
 
-    label { display: block; font-weight: 600; margin-bottom: 8px; margin-top: 18px; font-size: 14px; }
+    label { display: block; font-weight: 600; margin-bottom: 5px; margin-top: 15px; font-size: 14px; }
 
     input[type="text"], select {
-        width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #d1d5db;
+        width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #d1d5db;
         font-size: 16px; box-sizing: border-box; transition: 0.3s; background: #f9fafb;
     }
     input:focus, select:focus { border-color: #1e3c72; outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1); }
 
     button {
-        width: 100%; padding: 16px; background: #1e3c72; border: none;
+        width: 100%; padding: 15px; background: #1e3c72; border: none;
         color: #fff; font-size: 16px; font-weight: 700; border-radius: 10px;
-        cursor: pointer; margin-top: 25px; transition: 0.3s;
+        cursor: pointer; margin-top: 18px; /* Jarak dipangkas */
+        transition: 0.3s;
         box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
     }
     button:hover { background: #16305c; transform: translateY(-2px); }
 
-    .dynamic-section { display: none; animation: fadeIn 0.4s ease-in-out; }
-    .show { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-    .info-text { font-size: 12px; color: #666; margin-top: 8px; font-style: italic; }
-
+    /* --- UI HASIL (V5 Style + Fix Alignment) --- */
     .result {
-        margin-top: 25px; padding: 20px; background: #f0fdf4;
-        border-radius: 12px; border: 1px solid #bbf7d0; display: none;
+        margin-top: 18px;
+        padding: 18px; 
+        background: #f8fafc;
+        border-radius: 12px; 
+        border-left: 6px solid #1e3c72;
+        display: none;
+        animation: slideDown 0.4s ease-out;
     }
-    .row { display: flex; justify-content: space-between; margin: 12px 0; font-size: 15px; color: #374151; }
-    .big-total { 
-        font-size: 24px; font-weight: 800; color: #166534; margin-top: 15px; 
-        padding-top: 15px; border-top: 2px dashed #bbf7d0; text-align: right;
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Pastikan sejajar vertikal */
+        margin: 8px 0;
+        font-size: 15px;
+        color: #555;
     }
 
-    .zero-tax-badge {
-        background: #dbeafe; color: #1e40af; padding: 5px 10px; 
-        border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 5px;
+    .highlight { font-weight: bold; color: #1e3c72; }
+
+    .net-highlight {
+        font-size: 26px; 
+        font-weight: 800; 
+        color: #28a745; 
+        display: block;
+        margin-top: 2px;
     }
 
-    footer { text-align: center; font-size: 11px; margin-top: 30px; color: #9ca3af; border-top: 1px solid #eee; padding-top: 20px; }
+    /* --- CONVERTER UI (Fixed: Arrow Inside) --- */
+    .converter-section {
+        margin-top: 15px; 
+        padding-top: 12px; 
+        border-top: 1px dashed #cbd5e1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .conv-label {
+        font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .conv-pill-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    /* Trik Custom Select dengan Panah di Dalam */
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
+        min-width: 110px;
+    }
     
-    .donation-box {
-        display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;
+    .clean-select {
+        appearance: none;
+        -webkit-appearance: none; /* Hilangkan panah default browser */
+        width: 100%;
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1e3c72;
+        cursor: pointer;
+        padding-right: 20px; /* Ruang untuk panah custom */
+        outline: none;
+        z-index: 2;
+        position: relative;
     }
+
+    .custom-arrow {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        color: #64748b;
+        pointer-events: none; /* Supaya klik tembus ke select */
+        z-index: 1;
+    }
+
+    .conv-value-text {
+        font-size: 16px; font-weight: 800; color: #d97706; /* Emas */
+    }
+
+    /* Dynamic Sections */
+    .dynamic-section { display: none; animation: fadeIn 0.3s; }
+    .show { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .info-text { font-size: 12px; color: #666; margin-top: 6px; font-style: italic; }
+
+    /* Footer & Donation (Jarak diperbaiki) */
+    footer { text-align: center; font-size: 11px; margin-top: 20px; color: #9ca3af; border-top: 1px solid #eee; padding-top: 15px; }
+    .donation-box { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
     .btn-donate {
-        text-decoration: none; padding: 10px 18px; border-radius: 50px; 
-        font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 5px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;
+        text-decoration: none; padding: 9px 16px; border-radius: 50px; 
+        font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px;
+        box-shadow: 0 3px 5px rgba(0,0,0,0.1); transition: transform 0.2s;
     }
-    .btn-donate:hover { transform: translateY(-2px); box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+    .btn-donate:hover { transform: translateY(-2px); }
     .saweria { background: #FF813F; color: white; }
     .kofi { background: #29abe0; color: white; }
 </style>
@@ -102,11 +180,11 @@
         <option value="US">🇺🇸 United States (USD)</option>
         <option value="UK">🇬🇧 United Kingdom (GBP)</option>
         <option value="AU">🇦🇺 Australia (AUD)</option>
-        <option value="CA">🇨🇦 Canada (CAD)</option>
         <option value="SG">🇸🇬 Singapore (SGD)</option>
         <option value="MY">🇲🇾 Malaysia (MYR)</option>
         <option value="JP">🇯🇵 Japan (JPY)</option>
         <option value="DE">🇩🇪 Germany (EUR)</option>
+        <option value="CA">🇨🇦 Canada (CAD)</option>
         <option value="AE">🇦🇪 UAE / Dubai (AED)</option>
     </select>
 
@@ -126,228 +204,178 @@
             <option value="K3">K/3 (Menikah + 3 Anak)</option>
         </select>
         <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
-            <input type="checkbox" id="ikutBpjs" style="width:20px;" checked> <span style="font-size:14px">Potong BPJS (~4%)</span>
+            <input type="checkbox" id="ikutBpjs" style="width:18px; height:18px;" checked> <span style="font-size:14px">Potong BPJS (~4%)</span>
         </div>
-        <p class="info-text">*Catatan: Gaji tinggi (>10 Juta) menggunakan tarif estimasi rata-rata dalam simulasi ini.</p>
+        <p class="info-text" style=>*Catatan: Gaji tinggi (>10 Juta) menggunakan tarif estimasi rata-rata.</p>
     </div>
 
     <div id="section-US" class="dynamic-section">
         <label>Filing Status</label>
         <select id="usStatus"><option value="single">Single Filer</option><option value="married">Married Jointly</option></select>
-        <p class="info-text">*Includes Federal Tax & FICA (Social Security + Medicare).</p>
+        <p class="info-text">*Includes Federal Tax & FICA.</p>
     </div>
-
-    <div id="section-UK" class="dynamic-section">
-        <p class="info-text">*Includes Income Tax & National Insurance (NI) estimate.</p>
-    </div>
-
-    <div id="section-AU" class="dynamic-section">
-        <p class="info-text">*Includes ATO Income Tax & Medicare Levy (2%).</p>
-    </div>
-
-    <div id="section-CA" class="dynamic-section">
-        <p class="info-text">*Includes Federal & Provincial Tax estimate.</p>
-    </div>
-
-    <div id="section-SG" class="dynamic-section">
-        <p class="info-text">*Progressive Tax Rates (Non-Residents may differ). CPF excluded for Expats.</p>
-    </div>
-
-    <div id="section-MY" class="dynamic-section">
-        <p class="info-text">*Includes PCB Tax & EPF Employee Contribution (11%).</p>
-    </div>
-
-    <div id="section-JP" class="dynamic-section">
-        <p class="info-text">*Includes Income Tax, Resident Tax (~10%) & Social Insurance.</p>
-    </div>
-
+    <div id="section-UK" class="dynamic-section"><p class="info-text">*Includes Income Tax & National Insurance (NI) estimate.</p></div>
+    <div id="section-AU" class="dynamic-section"><p class="info-text">*Includes ATO Income Tax & Medicare Levy (2%).</p></div>
+    <div id="section-SG" class="dynamic-section"><p class="info-text">*Progressive Tax Rates. CPF excluded for Expats.</p></div>
+    <div id="section-MY" class="dynamic-section"><p class="info-text">*Includes PCB Tax & EPF Employee (11%).</p></div>
+    <div id="section-JP" class="dynamic-section"><p class="info-text">*Includes Income Tax, Resident Tax (~10%) & Social Ins.</p></div>
     <div id="section-DE" class="dynamic-section">
-        <label>Tax Class (Steuerklasse)</label>
-        <select id="deClass"><option value="1">Class 1 (Single)</option><option value="3">Class 3 (Married/Higher earner)</option></select>
-        <p class="info-text">*Includes Lohnsteuer, Solidarity Surcharge & Social Security.</p>
+        <label>Tax Class</label><select id="deClass"><option value="1">Class 1</option><option value="3">Class 3</option></select>
+        <p class="info-text">*Includes Lohnsteuer, Solidarity & Social Security.</p>
     </div>
-
-    <div id="section-AE" class="dynamic-section">
-        <div class="zero-tax-badge">✨ 0% Income Tax Haven</div>
-        <p class="info-text">Enjoy your full salary. No federal income tax in UAE.</p>
-    </div>
+    <div id="section-CA" class="dynamic-section"><p class="info-text">*Includes Federal & Provincial Tax estimate.</p></div>
+    <div id="section-AE" class="dynamic-section"><div class="zero-tax-badge">✨ 0% Income Tax Haven</div><p class="info-text">No federal income tax in UAE.</p></div>
 
     <button onclick="hitung()">Calculate / Hitung 🚀</button>
 
     <div class="result" id="hasil"></div>
 
     <footer>
-        <p style="font-size: 13px; font-weight: 500; margin-bottom: 10px;">Support the Developer? ☕</p>
+        <p style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Support the Developer? ☕</p>
         <div class="donation-box">
             <a href="https://saweria.co/AbramPM" target="_blank" class="btn-donate saweria">🇮🇩 Saweria</a>
             <a href="https://ko-fi.com/abrahampm" target="_blank" class="btn-donate kofi">💙 Ko-fi (USD)</a>
         </div>
-        <p>⚠️ Disclaimer: Estimates for simulation only. Consult a tax professional.<br>&copy; 2025 AbramPM Tools</p>
+        <p>⚠️ Disclaimer: Estimates only. Exchange rates are approximate.<br>&copy; 2025 AbramPM Tools</p>
     </footer>
 </div>
 
 <script>
 let currentCountry = "ID";
-let currency = "Rp";
 let locale = "id-ID";
+let currencySymbol = "Rp";
 
-// Data TER Indonesia (Lengkap K0-K3 Simpel)
-// Logic: Kalau gaji di atas Max terakhir, pakai Rate terakhir (Catch-all)
+const ratesToUSD = { US:1, ID:16200, UK:0.79, AU:1.52, SG:1.35, MY:4.70, JP:155, DE:0.92, CA:1.37, AE:3.67 };
+
+const countryConfig = {
+    ID: { sym: "Rp", loc: "id-ID", code: "IDR" },
+    US: { sym: "$", loc: "en-US", code: "USD" },
+    UK: { sym: "£", loc: "en-GB", code: "GBP" },
+    AU: { sym: "A$", loc: "en-AU", code: "AUD" },
+    SG: { sym: "S$", loc: "en-SG", code: "SGD" },
+    MY: { sym: "RM", loc: "ms-MY", code: "MYR" },
+    JP: { sym: "¥", loc: "ja-JP", code: "JPY" },
+    DE: { sym: "€", loc: "de-DE", code: "EUR" },
+    CA: { sym: "C$", loc: "en-CA", code: "CAD" },
+    AE: { sym: "AED", loc: "en-AE", code: "AED" }
+};
+
 const terTable = {
-    // TER A
     TK0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:10050000,rate:2},{max:1000000000,rate:3}], 
     K0: [{max:5850000,rate:0},{max:6100000,rate:0.25},{max:6400000,rate:0.5},{max:6800000,rate:0.75},{max:7250000,rate:1},{max:8050000,rate:1.25},{max:9200000,rate:1.5},{max:10300000,rate:1.75},{max:1000000000,rate:2.5}],
-    
-    // TER B
     K1: [{max:6300000,rate:0},{max:6600000,rate:0.25},{max:6950000,rate:0.5},{max:7350000,rate:0.75},{max:7800000,rate:1},{max:8650000,rate:1.25},{max:9900000,rate:1.5},{max:11100000,rate:1.75},{max:1000000000,rate:3}],
     K2: [{max:6750000,rate:0},{max:7100000,rate:0.25},{max:7500000,rate:0.5},{max:7900000,rate:0.75},{max:8400000,rate:1},{max:9300000,rate:1.25},{max:10600000,rate:1.5},{max:11900000,rate:1.75},{max:1000000000,rate:3}],
-    
-    // TER C
     K3: [{max:7200000,rate:0},{max:7600000,rate:0.25},{max:8050000,rate:0.5},{max:8500000,rate:0.75},{max:9000000,rate:1},{max:9950000,rate:1.25},{max:11300000,rate:1.5},{max:12700000,rate:1.75},{max:1000000000,rate:3}]
 };
 
 function gantiNegara() {
     currentCountry = document.getElementById("country").value;
-    const symbolEl = document.getElementById("currencySymbol");
+    const conf = countryConfig[currentCountry];
+    locale = conf.loc; currencySymbol = conf.sym;
     
+    document.getElementById("currencySymbol").innerText = conf.sym;
     document.getElementById("gaji").value = "";
     document.getElementById("hasil").style.display = "none";
     document.querySelectorAll('.dynamic-section').forEach(el => el.classList.remove('show'));
-
-    const config = {
-        ID: { sym: "Rp", loc: "id-ID", label: "Gaji Bulanan (Gross)" },
-        US: { sym: "$", loc: "en-US", label: "Monthly Salary (Gross)" },
-        UK: { sym: "£", loc: "en-GB", label: "Monthly Salary (Gross)" },
-        AU: { sym: "A$", loc: "en-AU", label: "Monthly Salary (Gross)" },
-        CA: { sym: "C$", loc: "en-CA", label: "Monthly Salary (Gross)" },
-        SG: { sym: "S$", loc: "en-SG", label: "Monthly Salary (Gross)" },
-        MY: { sym: "RM", loc: "ms-MY", label: "Gaji Sebulan (Kasar)" },
-        JP: { sym: "¥", loc: "ja-JP", label: "Monthly Salary (Yen)" },
-        DE: { sym: "€", loc: "de-DE", label: "Monatsgehalt (Brutto)" },
-        AE: { sym: "AED", loc: "en-AE", label: "Monthly Salary (AED)" },
-    };
-
-    const cfg = config[currentCountry];
-    currency = cfg.sym;
-    locale = cfg.loc;
-    symbolEl.innerText = cfg.sym;
-    document.getElementById("labelGaji").innerText = cfg.label;
-
-    const section = document.getElementById(`section-${currentCountry}`);
-    if(section) section.classList.add("show");
+    document.getElementById(`section-${currentCountry}`).classList.add("show");
 }
 
 function formatInputGaji(input) {
-    let angka = input.value.replace(/\D/g, ''); 
-    if(angka === "") return;
+    let angka = input.value.replace(/\D/g, ''); if(angka === "") return;
     input.value = new Intl.NumberFormat(locale).format(angka);
 }
 
-function fmtMoney(num) {
-    return currency + " " + num.toLocaleString(locale, {minimumFractionDigits: (currentCountry === 'JP' || currentCountry === 'ID') ? 0 : 2});
+// FIX ALIGNMENT: Hilangkan spasi antara Simbol & Angka biar rapat (Accounting Style)
+function fmt(num, cCode) {
+    let loc = "en-US"; let sym = "";
+    if (cCode) { const cfg = Object.values(countryConfig).find(c => c.code === cCode); if(cfg) { loc = cfg.loc; sym = cfg.sym; } }
+    else { loc = locale; sym = currencySymbol; }
+    // Format rapat: £10,000 bukan £ 10,000
+    return sym + num.toLocaleString(loc, {minimumFractionDigits: (loc==='id-ID'||loc==='ja-JP')?0:2, maximumFractionDigits:2});
 }
 
 function hitung() {
     let raw = document.getElementById("gaji").value.replace(/[^0-9]/g, '');
     let gaji = parseFloat(raw);
-    if (isNaN(gaji) || gaji <= 0) { alert("Please enter valid salary"); return; }
+    if (isNaN(gaji) || gaji <= 0) { alert("Masukkan gaji dulu boss"); return; }
 
-    let pajak = 0;
-    let sosmed = 0; 
-    let labelPajak = "Tax";
-    let labelSosmed = "Insurance/Other";
-    let annual = gaji * 12; 
+    let pajak = 0; let sosmed = 0; let annual = gaji * 12;
+    let labelPajak = "Tax"; let labelSosmed = "Other";
 
     if (currentCountry === "ID") {
         const ptkp = document.getElementById("ptkp").value;
         const list = terTable[ptkp] || terTable["TK0"];
         let rate = 0;
-        // Logic Catch-All: Jika gaji > batas tabel sampel, pakai rate terakhir di list
-        if(gaji > list[list.length-1].max) {
-            rate = list[list.length-1].rate;
-        } else { 
-            for(let i=0; i<list.length; i++) { 
-                if(gaji <= list[i].max) { rate=list[i].rate; break; } 
-            } 
-        }
-        pajak = gaji * (rate/100);
-        labelPajak = `PPh 21 TER (${rate}%)`;
-        if(document.getElementById("ikutBpjs").checked) { sosmed = gaji * 0.04; labelSosmed = "BPJS (4%)"; }
-    }
-
-    else if (currentCountry === "US") {
+        if(gaji > list[list.length-1].max) rate = list[list.length-1].rate;
+        else { for(let i=0; i<list.length; i++) { if(gaji <= list[i].max) { rate=list[i].rate; break; } } }
+        pajak = gaji * (rate/100); labelPajak=`PPh 21 (${rate}%)`;
+        if(document.getElementById("ikutBpjs").checked) { sosmed = gaji * 0.04; labelSosmed="BPJS (4%)"; }
+    } else if (currentCountry === "US") {
         let deduct = (document.getElementById("usStatus").value === "single") ? 14600 : 29200;
         let taxable = Math.max(0, annual - deduct);
-        let effRate = 0;
-        if(taxable > 100000) effRate = 0.22; else if(taxable > 45000) effRate = 0.12; else if(taxable > 0) effRate = 0.10;
-        pajak = (taxable * effRate) / 12;
-        sosmed = gaji * 0.0765;
-        labelPajak = "Federal Tax (Est)"; labelSosmed = "FICA (SS+Med)";
-    }
-
-    else if (currentCountry === "UK") {
+        let effRate = (taxable>100000)?0.22:(taxable>45000?0.12:0.10);
+        pajak = (taxable * effRate) / 12; sosmed = gaji * 0.0765; labelPajak="Fed Tax"; labelSosmed="FICA";
+    } else if (currentCountry === "UK") {
         let taxable = Math.max(0, annual - 12570);
-        let taxAnnual = 0;
-        if (taxable > 37700) taxAnnual = (37700 * 0.20) + ((taxable - 37700) * 0.40); else taxAnnual = taxable * 0.20;
-        let niAnnual = Math.max(0, annual - 12570) * 0.08; 
-        pajak = taxAnnual / 12; sosmed = niAnnual / 12;
-        labelPajak = "Income Tax"; labelSosmed = "National Insurance";
-    }
-
-    else if (currentCountry === "AU") {
-        let taxAnnual = 0;
-        if(annual > 18200) { if(annual <= 45000) taxAnnual = (annual-18200)*0.16; else if(annual <= 135000) taxAnnual = 4288 + (annual-45000)*0.30; else taxAnnual = 31288 + (annual-135000)*0.37; }
-        pajak = taxAnnual / 12; sosmed = gaji * 0.02; 
-        labelPajak = "Income Tax"; labelSosmed = "Medicare Levy (2%)";
-    }
-
-    else if (currentCountry === "CA") {
-        let effRate = 0; if(annual > 100000) effRate = 0.26; else if(annual > 50000) effRate = 0.20; else effRate = 0.15;
-        pajak = gaji * effRate; sosmed = gaji * 0.059;
-        labelPajak = "Fed+Prov Tax (Est)"; labelSosmed = "CPP/EI";
-    }
-
-    else if (currentCountry === "SG") {
-        let effRate = 0; if(annual > 80000) effRate = 0.07; else if(annual > 40000) effRate = 0.035; else if(annual > 20000) effRate = 0.01;
-        pajak = gaji * effRate; sosmed = 0;
-        labelPajak = "Income Tax (Est)"; labelSosmed = "CPF (PR Only - 0)";
-    }
-
-    else if (currentCountry === "MY") {
-        let effRate = 0; if(annual > 100000) effRate = 0.15; else if(annual > 50000) effRate = 0.08; else if(annual > 35000) effRate = 0.03;
-        pajak = gaji * effRate; sosmed = gaji * 0.11;
-        labelPajak = "PCB Tax (Est)"; labelSosmed = "EPF (11%)";
-    }
-
-    else if (currentCountry === "JP") {
-        let effTax = 0.05; if(annual > 4000000) effTax = 0.10;
-        let residentTax = 0.10; let socialIns = 0.15;
-        pajak = gaji * (effTax + residentTax); sosmed = gaji * socialIns;
-        labelPajak = "Income + Res. Tax"; labelSosmed = "Social Insurance";
-    }
-
-    else if (currentCountry === "DE") {
-        let taxClass = document.getElementById("deClass").value;
-        let totalDeductRate = (taxClass === "1") ? 0.38 : 0.30;
-        pajak = gaji * (totalDeductRate * 0.6); sosmed = gaji * (totalDeductRate * 0.4);
-        labelPajak = "Lohnsteuer (Tax)"; labelSosmed = "Social (Renten/Kranken)";
-    }
-
-    else if (currentCountry === "AE") {
-        pajak = 0; sosmed = 0; labelPajak = "Income Tax (0%)"; labelSosmed = "Deductions";
-    }
+        let taxAnn = (taxable>37700) ? (37700*0.2 + (taxable-37700)*0.4) : taxable*0.2;
+        pajak = taxAnn/12; sosmed = (Math.max(0, annual-12570)*0.08)/12; labelPajak="Income Tax"; labelSosmed="NI";
+    } else if (currentCountry === "AU") {
+        let taxAnn = 0; if(annual>18200){ if(annual<=45000) taxAnn=(annual-18200)*0.16; else if(annual<=135000) taxAnn=4288+(annual-45000)*0.3; else taxAnn=31288+(annual-135000)*0.37; }
+        pajak = taxAnn/12; sosmed = gaji*0.02; labelPajak="Tax"; labelSosmed="Medicare";
+    } else if (currentCountry === "SG") { pajak = (annual>20000 ? gaji*0.02 : 0); labelPajak="Tax (Est)"; }
+    else if (currentCountry === "MY") { pajak = gaji * (annual>50000?0.08:0.03); sosmed = gaji * 0.11; labelPajak="PCB"; labelSosmed="EPF"; }
+    else if (currentCountry === "JP") { pajak = gaji * 0.15; sosmed = gaji * 0.15; labelPajak="Tax"; labelSosmed="Social Ins"; }
+    else if (currentCountry === "DE") { let rate = (document.getElementById("deClass").value==="1")?0.38:0.30; pajak=gaji*(rate*0.6); sosmed=gaji*(rate*0.4); labelPajak="Lohnsteuer"; labelSosmed="Social"; }
+    else if (currentCountry === "CA") { pajak = gaji * 0.20; sosmed = gaji * 0.059; labelPajak="Tax"; labelSosmed="CPP/EI"; }
+    else if (currentCountry === "AE") { pajak=0; sosmed=0; labelPajak="Tax (0%)"; }
 
     const netto = gaji - pajak - sosmed;
-    const divResult = document.getElementById("hasil");
+    renderHasil(gaji, pajak, sosmed, netto, labelPajak, labelSosmed);
+}
+
+function renderHasil(gaji, pajak, sosmed, netto, labelPajak, labelSosmed) {
+    const div = document.getElementById("hasil");
     
-    let html = `<div class="row"><span>Gross Income:</span> <strong>${fmtMoney(gaji)}</strong></div>`;
-    if(pajak > 0) html += `<div class="row"><span>${labelPajak}:</span> <span style="color:#ef4444">-${fmtMoney(pajak)}</span></div>`;
-    else html += `<div class="row"><span>${labelPajak}:</span> <span style="color:#3b82f6">0 (Tax Free)</span></div>`;
-    if(sosmed > 0) html += `<div class="row"><span>${labelSosmed}:</span> <span style="color:#ef4444">-${fmtMoney(sosmed)}</span></div>`;
-    html += `<div class="big-total">Net Pay: ${fmtMoney(netto)}</div>`;
-    
-    divResult.innerHTML = html;
-    divResult.style.display = "block";
+    let options = "";
+    Object.keys(countryConfig).forEach(code => {
+        const sel = (code === "ID" && currentCountry !== "ID") ? "selected" : (code === "US" && currentCountry === "ID" ? "selected" : "");
+        options += `<option value="${code}" ${sel}>${countryConfig[code].code} (${countryConfig[code].sym})</option>`;
+    });
+
+    // RENDER FINAL (Fixed Arrows & Spacing)
+    div.innerHTML = `
+        <div class="row"><span>Gross Salary:</span> <span class="highlight">${fmt(gaji)}</span></div>
+        <div class="row"><span>${labelPajak}:</span> <span style="color:#d9534f">-${fmt(pajak)}</span></div>
+        ${sosmed > 0 ? `<div class="row"><span>${labelSosmed}:</span> <span style="color:#d9534f">-${fmt(sosmed)}</span></div>` : ''}
+        
+        <div style="height: 1px; background: #e2e8f0; margin: 12px 0;"></div>
+        
+        <div style="margin-bottom:0; font-size:14px; color:#64748b;">Take Home Pay:</div>
+        <span class="net-highlight">${fmt(netto)}</span>
+        
+        <div class="converter-section">
+            <span class="conv-label">EXCANGE CURRENCY:</span>
+            <div class="conv-pill-container">
+                <div class="select-wrapper">
+                    <select id="targetCurr" class="clean-select" onchange="convertCurrency(${netto})">
+                        ${options}
+                    </select>
+                    <span class="custom-arrow">▼</span>
+                </div>
+                <span id="convValue" class="conv-value-text">...</span>
+            </div>
+        </div>
+    `;
+    div.style.display = "block";
+    convertCurrency(netto);
+}
+
+function convertCurrency(nettoSource) {
+    const targetCode = document.getElementById("targetCurr").value;
+    const sourceCode = currentCountry;
+    const rateSourceToUSD = 1 / ratesToUSD[sourceCode]; 
+    const valInTarget = nettoSource * rateSourceToUSD * ratesToUSD[targetCode];
+    document.getElementById("convValue").innerText = "≈ " + fmt(valInTarget, targetCode);
 }
 </script>
 
