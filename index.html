@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Global Salary Calculator 2025. Accurate Take Home Pay for Indonesia, USA, UK, Germany, Japan, UAE, Singapore, Australia, Canada, Malaysia.">
+<meta name="description" content="Global Salary Calculator 2025. Accurate Take Home Pay for Indonesia (Lengkap K/0-K/3), USA, UK, Germany, Japan, UAE, Singapore, Australia, Canada, Malaysia.">
 <meta name="keywords" content="salary calculator, take home pay, brutto netto rechner, gaji bersih, pph 21 ter, uk tax calculator, us paycheck calculator">
 <meta name="author" content="AbramPM">
 <title>Global Salary Calculator: 10 Countries Edition 🌍</title>
@@ -122,10 +122,13 @@
             <option value="TK0">TK/0 (Lajang)</option>
             <option value="K0">K/0 (Menikah)</option>
             <option value="K1">K/1 (Menikah + 1 Anak)</option>
+            <option value="K2">K/2 (Menikah + 2 Anak)</option>
+            <option value="K3">K/3 (Menikah + 3 Anak)</option>
         </select>
         <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
             <input type="checkbox" id="ikutBpjs" style="width:20px;" checked> <span style="font-size:14px">Potong BPJS (~4%)</span>
         </div>
+        <p class="info-text" style="color:#d9534f">*Catatan: Gaji tinggi (>10 Juta) menggunakan tarif estimasi rata-rata dalam simulasi ini.</p>
     </div>
 
     <div id="section-US" class="dynamic-section">
@@ -188,10 +191,19 @@ let currentCountry = "ID";
 let currency = "Rp";
 let locale = "id-ID";
 
+// Data TER Indonesia (Lengkap K0-K3 Simpel)
+// Logic: Kalau gaji di atas Max terakhir, pakai Rate terakhir (Catch-all)
 const terTable = {
-    TK0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:10050000,rate:2},{max:1000000000,rate:2.5}],
-    K0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:1000000000,rate:2}],
-    K1: [{max:6200000,rate:0},{max:6500000,rate:0.25},{max:6850000,rate:0.5},{max:7300000,rate:0.75},{max:7800000,rate:1},{max:8400000,rate:1.25},{max:9300000,rate:1.5},{max:10200000,rate:1.75},{max:1000000000,rate:2}]
+    // TER A
+    TK0: [{max:5400000,rate:0},{max:5650000,rate:0.25},{max:5950000,rate:0.5},{max:6300000,rate:0.75},{max:6750000,rate:1},{max:7500000,rate:1.25},{max:8550000,rate:1.5},{max:9650000,rate:1.75},{max:10050000,rate:2},{max:1000000000,rate:3}], 
+    K0: [{max:5850000,rate:0},{max:6100000,rate:0.25},{max:6400000,rate:0.5},{max:6800000,rate:0.75},{max:7250000,rate:1},{max:8050000,rate:1.25},{max:9200000,rate:1.5},{max:10300000,rate:1.75},{max:1000000000,rate:2.5}],
+    
+    // TER B
+    K1: [{max:6300000,rate:0},{max:6600000,rate:0.25},{max:6950000,rate:0.5},{max:7350000,rate:0.75},{max:7800000,rate:1},{max:8650000,rate:1.25},{max:9900000,rate:1.5},{max:11100000,rate:1.75},{max:1000000000,rate:3}],
+    K2: [{max:6750000,rate:0},{max:7100000,rate:0.25},{max:7500000,rate:0.5},{max:7900000,rate:0.75},{max:8400000,rate:1},{max:9300000,rate:1.25},{max:10600000,rate:1.5},{max:11900000,rate:1.75},{max:1000000000,rate:3}],
+    
+    // TER C
+    K3: [{max:7200000,rate:0},{max:7600000,rate:0.25},{max:8050000,rate:0.5},{max:8500000,rate:0.75},{max:9000000,rate:1},{max:9950000,rate:1.25},{max:11300000,rate:1.5},{max:12700000,rate:1.75},{max:1000000000,rate:3}]
 };
 
 function gantiNegara() {
@@ -244,15 +256,20 @@ function hitung() {
     let sosmed = 0; 
     let labelPajak = "Tax";
     let labelSosmed = "Insurance/Other";
-
     let annual = gaji * 12; 
 
     if (currentCountry === "ID") {
         const ptkp = document.getElementById("ptkp").value;
         const list = terTable[ptkp] || terTable["TK0"];
         let rate = 0;
-        if(gaji > list[list.length-1].max) rate = list[list.length-1].rate;
-        else { for(let i=0; i<list.length; i++) { if(gaji <= list[i].max) { rate=list[i].rate; break; } } }
+        // Logic Catch-All: Jika gaji > batas tabel sampel, pakai rate terakhir di list
+        if(gaji > list[list.length-1].max) {
+            rate = list[list.length-1].rate;
+        } else { 
+            for(let i=0; i<list.length; i++) { 
+                if(gaji <= list[i].max) { rate=list[i].rate; break; } 
+            } 
+        }
         pajak = gaji * (rate/100);
         labelPajak = `PPh 21 TER (${rate}%)`;
         if(document.getElementById("ikutBpjs").checked) { sosmed = gaji * 0.04; labelSosmed = "BPJS (4%)"; }
