@@ -205,19 +205,19 @@ function resetForm() {
 }
 
 function hitung() {
-    // 1. Ambil Gaji (Hilangkan titik)
+
     let rawValue = document.getElementById("gaji").value.replace(/\./g, '');
     const gaji = parseFloat(rawValue);
     const ptkp = document.getElementById("ptkp").value;
     const pakaiBpjs = document.getElementById("ikutBpjs").checked; // Cek status checkbox
 
-    // Validasi
+
     if (isNaN(gaji) || gaji <= 0) {
         alert("Masukkan jumlah gaji yang valid!");
         return;
     }
 
-    // 2. Hitung Pajak (TER)
+
     const tarifList = terTable[ptkp] || terTable["TK0"]; 
     let rate = 0;
 
@@ -231,6 +231,7 @@ function hitung() {
             }
         }
     }
+
     const pajak = gaji * (rate / 100);
 
     // 3. Hitung BPJS (Jika dicentang)
@@ -240,7 +241,7 @@ function hitung() {
         // BPJS Kes (1%) + JHT (2%) + JP (1% - ada max cap, tapi kita simpelkan dulu)
         // Total beban karyawan = 4%
         potonganBpjs = gaji * 0.04;
-        
+
         // Cap maksimal JP (Opsional: biar makin pro)
         // Batas upah JP 2024 sekitar 10juta. Kalau gaji > 10jt, JP mentok di angkanya.
         // Tapi biar "Anti Ribet", flat 4% sudah cukup akurat buat gaji UMR-10jt.
@@ -272,6 +273,7 @@ function hitung() {
     containerHasil.style.display = "none";
     containerHasil.offsetHeight; 
     containerHasil.style.display = "block";
+
 }
 </script>
 
